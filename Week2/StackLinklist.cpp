@@ -1,55 +1,40 @@
+#include "LinkList.h"
 #include <iostream>
-#include <stdexcept>
 
-class StackLinkedList {
+using namespace std;
+
+class StackLinkList {
 private:
-    struct Node {
-        int data;
-        Node* next;
-        Node(int val) : data(val), next(nullptr) {}
-    };
-    Node* head;
-    int count;
-
+    LinkList stack_linklist;
+    int length;
 public:
-    StackLinkedList() : head(nullptr), count(0) {}
 
-    ~StackLinkedList() {
-        while (!isEmpty()) {
-            pop();
-        }
+    StackLinkList() {
+        length = 0;
     }
 
-    // O(1) - Kiểm tra rỗng
-    bool isEmpty() const {
-        return head == nullptr;
+    bool isEmpty() {    // O(1)
+        return length == 0;
     }
 
-    // O(1) - Kích thước stack
-    int size() const {
-        return count;
+    void push(int item) {   // O(1)
+        stack_linklist.insert_head(item);
+        length++;
     }
 
-    // O(1) - Thêm phần tử vào đỉnh
-    void push(int data) {
-        Node* newNode = new Node(data);
-        newNode->next = head;
-        head = newNode;
-        count++;
+    int pop() {     // O(1)
+        int data;
+        stack_linklist.remove_head(data);
+        length--;
+        return data;
     }
 
-    // O(1) - Xóa và trả về phần tử đỉnh
-    int pop() {
-        Node* temp = head;
-        int val = temp->data;
-        head = head->next;
-        delete temp;
-        count--;
-        return val;
+    int size() {    // O(1)
+        return length;
     }
 
-    // O(1) - Xem giá trị đỉnh
-    int top() const {
-        return head->data;
+    int top() {     // O(1)
+        return stack_linklist.get_value(0);
     }
+
 };

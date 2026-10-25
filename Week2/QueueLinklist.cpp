@@ -1,60 +1,36 @@
-class QueueLinkedList {
+#include "LinkList.h"
+
+class QueueLinkList {
 private:
-    struct Node {
-        int data;
-        Node* next;
-        Node(int val) : data(val), next(nullptr) {}
-    };
-    Node* head;
-    Node* tail;
-    int count;
-
+    LinkList queue_linklist;
+    int length;
 public:
-    QueueLinkedList() : head(nullptr), tail(nullptr), count(0) {}
 
-    ~QueueLinkedList() {
-        while (!isEmpty()) {
-            dequeue();
-        }
+    QueueLinkList() {
+        length = 0;
     }
 
-    // O(1) - Kiểm tra rỗng
-    bool isEmpty() const {
-        return head == nullptr;
+    bool isEmpty() {    // O(1)
+        return length == 0;
     }
 
-    // O(1) - Kích thước hàng đợi
-    int size() const {
-        return count;
+    void enqueue(int item) {    // O(n)
+        queue_linklist.Append(item);
+        length++;
     }
 
-    // O(1) - Thêm vào cuối hàng đợi
-    void enqueue(int item) {
-        Node* newNode = new Node(item);
-        if (isEmpty()) {
-            head = tail = newNode;
-        } else {
-            tail->next = newNode;
-            tail = newNode;
-        }
-        count++;
+    int dequeue() {     // O(1)
+        int data;
+        queue_linklist.remove_head(data);
+        length--;
+        return data;
     }
 
-    // O(1) - Xóa và lấy phần tử ở đầu hàng đợi
-    int dequeue() {
-        Node* temp = head;
-        int val = temp->data;
-        head = head->next;
-        if (head == nullptr) {
-            tail = nullptr;
-        }
-        delete temp;
-        count--;
-        return val;
+    int front() {   // O(1)
+        return queue_linklist.get_value(0);
     }
 
-    // O(1) - Xem phần tử đầu hàng đợi
-    int front() const {
-        return head->data;
+    int size() {    // O(1)
+        return length;
     }
 };
