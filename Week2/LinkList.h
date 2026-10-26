@@ -3,6 +3,7 @@
 using namespace std;
 
 struct Node {
+    int key;
     int data;
     Node *next;
 };
@@ -42,15 +43,27 @@ public:
         return head == NULL;
     }
 
-    Node *insert_head(int data) {    // O(1)
-        Node *temp = new Node{data, NULL};
+    int get_pos(int key) {
+        Node *temp = head;
+        int i = 0;
+        while (temp != NULL) {
+            if (temp->key == key) return i;
+            i++;
+            temp = temp->next;
+        }
+
+        return -1;
+    }
+
+    Node *insert_head(int key, int data) {    // O(1)
+        Node *temp = new Node{key, data, NULL};
         temp->next = head;
         head = temp;
         return head;
     }
 
-    Node *Append(int data) {    // O(n)
-        Node *new_node = new Node{data, NULL};
+    Node *Append(int key, int data) {    // O(n)
+        Node *new_node = new Node{key, data, NULL};
         if (head == NULL) {
             head = new_node;
             return head;
@@ -65,10 +78,10 @@ public:
         return head;
     }  
 
-    Node *insert(int data, int index) {     // O(n)
-        if (index == 0) return insert_head(data);
+    Node *insert(int key, int data, int index) {     // O(n)
+        if (index == 0) return insert_head(key, data);
 
-        Node *new_nod = new Node {data, NULL};
+        Node *new_nod = new Node {key, data, NULL};
         Node *temp = head;
         int i = 0;
         while (i != index - 1) {
@@ -85,12 +98,12 @@ public:
         return head;
     }
 
-    Node *remove_head(int &data) {   // O(1)
+    int remove_head(int &data) {   // O(1)
         Node *temp = head->next;
         data = head->data;
         delete head;
         head = temp;
-        return head;
+        return data;
     }
 
     Node *remove_end(void) {    // O(n)
@@ -112,7 +125,7 @@ public:
     }
 
 
-    Node *remove(int index) {   // O(n)
+    int remove(int index) {   // O(n)
         int data;
         if (index == 0) return remove_head(data);
         Node *temp = head;
@@ -123,9 +136,10 @@ public:
         }
 
         Node *temp_2 = temp->next->next;
+        data = temp->next->data;
         delete temp->next;
         temp->next = temp_2;
-        return head;
+        return data;
     }
 
     int traverse(void) {   // O(n)
@@ -136,6 +150,16 @@ public:
             temp = temp->next;
         }
         return length;
+    }
+
+    int search(int key) {
+        Node *temp = head;
+        while (temp != NULL) {
+            if (key == temp->key) return temp->data;
+            temp = temp->next;
+        }
+
+        return -1;
     }
 
     void traverse_back() {
